@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EstateAI | House Price Prediction</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        /* GLOBAL */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f6f3;
+            color: #263548;
+        }
+
+
+        /* HERO SECTION */
+
+        .hero {
+            position: relative;
+            min-height: 590px;
+            overflow: hidden;
+            background: #dce8df;
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 55%;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+
+            background: linear-gradient(
+                90deg,
+                rgba(12, 28, 29, 0.58),
+                rgba(12, 28, 29, 0.14) 75%
+            );
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+            position: relative;
+            z-index: 2;
+
+            max-width: 1250px;
+            height: 95px;
+
+            margin: auto;
+            padding: 0 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: white;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #aa8a54;
+            border-radius: 11px;
+
+            font-size: 27px;
+        }
+
+        .brand span {
+            color: #e5c993;
+        }
+
+        .nav-badge {
+            background: rgba(255,255,255,0.92);
+            color: #263548;
+
+            padding: 12px 18px;
+            border-radius: 30px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* HERO CONTENT */
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 1250px;
+            margin: auto;
+            padding: 100px 30px 120px;
+        }
+
+        .hero-text {
+            max-width: 650px;
+
+            background: rgba(255,255,255,0.91);
+            backdrop-filter: blur(10px);
+
+            padding: 38px;
+            border-radius: 12px;
+
+            box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+        }
+
+        .hero-label {
+            color: #aa8953;
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+
+            font-size: clamp(36px, 5vw, 54px);
+            line-height: 1.2;
+
+            color: #253649;
+
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: #aa8953;
+        }
+
+        .hero-text p {
+            color: #667588;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+
+        /* MAIN CONTAINER */
+
+        .main-container {
+            position: relative;
+            z-index: 3;
+
+            max-width: 1100px;
+            margin: -55px auto 0;
+
+            padding: 0 25px;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+
+            border-radius: 16px;
+            padding: 45px 48px;
+
+            box-shadow: 0 20px 65px rgba(0,0,0,0.12);
+
+            margin-bottom: 50px;
+        }
+
+
+        /* FORM HEADER */
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding-bottom: 28px;
+            border-bottom: 1px solid #e8ebef;
+        }
+
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+
+            font-size: 27px;
+            margin-bottom: 9px;
+            color: #253649;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            color: #8994a2;
+        }
+
+        .ai-badge {
+            background: #f7f2e8;
+            color: #a18453;
+
+            padding: 12px 16px;
+            border-radius: 7px;
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+
+        /* FORM SECTIONS */
+
+        .form-section {
+            padding-top: 38px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            margin-bottom: 28px;
+        }
+
+        .section-number {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #f7f2e8;
+            color: #a18453;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .section-heading h3 {
+            font-size: 17px;
+            color: #263548;
+            margin-bottom: 5px;
+        }
+
+        .section-heading p {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+
+        /* INPUT GRID */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            gap: 27px 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #344256;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            height: 53px;
+
+            padding: 0 15px;
+
+            border: 1px solid #dfe4eb;
+            border-radius: 8px;
+
+            background: #fafbfc;
+
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: #334155;
+
+            outline: none;
+            transition: 0.25s;
+        }
+
+        .form-group input::placeholder {
+            color: #a5afbb;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            background: white;
+
+            border-color: #aa8953;
+
+            box-shadow: 0 0 0 3px rgba(170,137,83,0.12);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #aa8953;
+        }
+
+
+        /* DIVIDER */
+
+        .divider {
+            height: 1px;
+            background: #e8ebef;
+            margin-top: 40px;
+        }
+
+
+        /* BUTTON */
+
+        .button-area {
+            margin-top: 43px;
+        }
+
+        .predict-button {
+            width: 100%;
+            height: 58px;
+
+            background: #aa8953;
+            color: white;
+
+            border: none;
+            border-radius: 9px;
+
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .predict-button:hover {
+            background: #886d42;
+            transform: translateY(-2px);
+
+            box-shadow: 0 8px 20px rgba(170,137,83,0.25);
+        }
+
+        .button-note {
+            margin-top: 15px;
+
+            text-align: center;
+            color: #9ca3af;
+
+            font-size: 12px;
+        }
+
+
+        /* RESULT */
+
+        .result-card {
+            margin-top: 35px;
+            padding: 35px;
+
+            background: #f8f5ed;
+            border: 1px solid #e7ddc9;
+
+            border-radius: 12px;
+            text-align: center;
+
+            animation: fadeUp 0.5s ease;
+        }
+
+        .result-label {
+            color: #aa8953;
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+
+            margin-bottom: 15px;
+        }
+
+        .result-card h2 {
+            font-family: 'Playfair Display', serif;
+
+            color: #263548;
+            font-size: 24px;
+
+            margin-bottom: 15px;
+        }
+
+        .result-price {
+            color: #987944;
+
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800;
+
+            margin-bottom: 12px;
+        }
+
+        .result-card small {
+            color: #89919c;
+            font-size: 12px;
+        }
+
+
+        /* ERROR */
+
+        .error-card {
+            margin-top: 25px;
+            padding: 16px;
+
+            border-radius: 8px;
+
+            background: #fff1f0;
+            border: 1px solid #fecaca;
+
+            color: #b42318;
+            font-size: 14px;
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+            max-width: 1100px;
+            margin: auto;
+
+            padding: 0 25px 30px;
+
+            display: flex;
+            justify-content: space-between;
+
+            color: #718096;
+            font-size: 12px;
+        }
+
+        .footer span {
+            color: #aa8953;
+        }
+
+
+        /* ANIMATION */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* TABLET */
+
+        @media(max-width: 850px) {
+
+            .form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .form-card {
+                padding: 32px;
+            }
+
+            .hero-content {
+                padding-top: 85px;
+            }
+
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 550px) {
+
+            .hero {
+                min-height: 540px;
+            }
+
+            .navbar {
+                height: 75px;
+                padding: 0 17px;
+            }
+
+            .brand {
+                font-size: 21px;
+            }
+
+            .brand-icon {
+                width: 38px;
+                height: 38px;
+            }
+
+            .nav-badge {
+                padding: 9px 11px;
+                font-size: 10px;
+            }
+
+            .hero-content {
+                padding: 85px 18px 90px;
+            }
+
+            .hero-text {
+                padding: 25px 21px;
+            }
+
+            .hero-text h1 {
+                font-size: 36px;
+            }
+
+            .main-container {
+                padding: 0 13px;
+            }
+
+            .form-card {
+                padding: 25px 18px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 17px;
+            }
+
+            .card-header h2 {
+                font-size: 23px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 23px;
+            }
+
+            .result-card {
+                padding: 25px 15px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- BRIGHT HOUSE BACKGROUND -->
+
+    <section class="hero">
+
+        <img
+            class="hero-image"
+
+            src="https://images.unsplash.com/photo-1760067537255-64d36262cb0a?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=60&w=3000"
+
+            alt="Beautiful modern luxury villa with swimming pool"
+
+            onerror="this.onerror=null; this.src='https://res-5.cloudinary.com/bookingsync/image/upload/f_auto%2Cg_center%2Cw_935%2Car_3%3A2%2Cq_90%2Cc_fill/v1623315497/366m_f1c87101-4bc2-415a-baa4-23d9ca122162.jpg';"
+        >
+
+        <div class="hero-overlay"></div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="navbar">
+
+            <div class="brand">
+                <div class="brand-icon">⌂</div>
+                Estate<span>AI</span>
+            </div>
+
+            <div class="nav-badge">
+                ✦ AI PROPERTY VALUATION
+            </div>
+
+        </nav>
+
+
+        <!-- HERO TEXT -->
+
+        <div class="hero-content">
+
+            <div class="hero-text">
+
+                <div class="hero-label">
+                    PREMIUM REAL ESTATE INTELLIGENCE
+                </div>
+
+                <h1>
+                    Discover the Value
+                    of Your <span>Dream Home.</span>
+                </h1>
+
+                <p>
+                    Explore your property's estimated value
+                    with machine learning. Enter your property
+                    details and receive an intelligent
+                    price prediction.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- MAIN FORM -->
+
+    <main class="main-container">
+
+        <div class="form-card">
+
+
+            <!-- FORM HEADER -->
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Property Information</h2>
+
+                    <p>
+                        Provide the details below to calculate
+                        your estimated house price.
+                    </p>
+
+                </div>
+
+                <div class="ai-badge">
+                    AI POWERED ESTIMATOR
+                </div>
+
+            </div>
+
+
+
+            <form action="/predict" method="POST">
+
+
+                <!-- PROPERTY DETAILS -->
+
+                <section class="form-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-number">01</div>
+
+                        <div>
+                            <h3>Property Details</h3>
+                            <p>Basic information about your house.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="area">Area (sq. ft.)</label>
+
+                            <input
+                                type="number"
+                                id="area"
+                                name="area"
+                                placeholder="e.g. 2500"
+                                min="1"
+                                step="any"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="bedrooms">Bedrooms</label>
+
+                            <input
+                                type="number"
+                                id="bedrooms"
+                                name="bedrooms"
+                                placeholder="e.g. 3"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="bathrooms">Bathrooms</label>
+
+                            <input
+                                type="number"
+                                id="bathrooms"
+                                name="bathrooms"
+                                placeholder="e.g. 2"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="stories">Stories</label>
+
+                            <input
+                                type="number"
+                                id="stories"
+                                name="stories"
+                                placeholder="e.g. 2"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="parking">Parking Spaces</label>
+
+                            <input
+                                type="number"
+                                id="parking"
+                                name="parking"
+                                placeholder="e.g. 1"
+                                min="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="furnishingstatus">
+                                Furnishing Status
+                            </label>
+
+                            <select
+                                id="furnishingstatus"
+                                name="furnishingstatus"
+                                required
+                            >
+                                <option value="furnished">Furnished</option>
+
+                                <option value="semi-furnished">
+                                    Semi-Furnished
+                                </option>
+
+                                <option value="unfurnished">
+                                    Unfurnished
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <div class="divider"></div>
+
+
+
+                <!-- PROPERTY FEATURES -->
+
+                <section class="form-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-number">02</div>
+
+                        <div>
+                            <h3>Property Features</h3>
+                            <p>Select the available facilities.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="mainroad">Main Road Access</label>
+
+                            <select id="mainroad" name="mainroad" required>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="guestroom">Guest Room</label>
+
+                            <select id="guestroom" name="guestroom" required>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="basement">Basement</label>
+
+                            <select id="basement" name="basement" required>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="hotwaterheating">
+                                Hot Water Heating
+                            </label>
+
+                            <select
+                                id="hotwaterheating"
+                                name="hotwaterheating"
+                                required
+                            >
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="airconditioning">
+                                Air Conditioning
+                            </label>
+
+                            <select
+                                id="airconditioning"
+                                name="airconditioning"
+                                required
+                            >
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="prefarea">Preferred Area</label>
+
+                            <select id="prefarea" name="prefarea" required>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- PREDICT BUTTON -->
+
+                <div class="button-area">
+
+                    <button type="submit" class="predict-button">
+                        Predict House Price &nbsp; →
+                    </button>
+
+                    <p class="button-note">
+                        Powered by FastAPI and Machine Learning.
+                    </p>
+
+                </div>
+
+
+            </form>
+
+
+
+            <!-- RESULT -->
+
+            {% if prediction is not none %}
+
+            <div class="result-card">
+
+                <div class="result-label">
+                    PREDICTION COMPLETED
+                </div>
+
+                <h2>Estimated Property Value</h2>
+
+                <div class="result-price">
+                    {{ "{:,.2f}".format(prediction) }}
+                </div>
+
+                <small>
+                    Price in the same units as the training dataset.
+                </small>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- ERROR -->
+
+            {% if error %}
+
+            <div class="error-card">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>© 2026 EstateAI. All rights reserved.</p>
+
+        <p>
+            Built with
+            <span>Python</span> ·
+            <span>FastAPI</span> ·
+            <span>Machine Learning</span>
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
